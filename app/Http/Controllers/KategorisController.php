@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\kategoris;
 use App\Http\Requests\StorekategorisRequest;
 use App\Http\Requests\UpdatekategorisRequest;
+use App\Models\kategoris;
 
 class KategorisController extends Controller
 {
@@ -13,7 +13,7 @@ class KategorisController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(kategoris::query()->latest('id')->get());
     }
 
     /**
@@ -21,7 +21,7 @@ class KategorisController extends Controller
      */
     public function create()
     {
-        //
+        abort(404);
     }
 
     /**
@@ -29,7 +29,9 @@ class KategorisController extends Controller
      */
     public function store(StorekategorisRequest $request)
     {
-        //
+        $kategori = kategoris::query()->create($request->validated());
+
+        return response()->json($kategori, 201);
     }
 
     /**
@@ -37,7 +39,7 @@ class KategorisController extends Controller
      */
     public function show(kategoris $kategoris)
     {
-        //
+        return response()->json($kategoris);
     }
 
     /**
@@ -45,7 +47,7 @@ class KategorisController extends Controller
      */
     public function edit(kategoris $kategoris)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -53,7 +55,9 @@ class KategorisController extends Controller
      */
     public function update(UpdatekategorisRequest $request, kategoris $kategoris)
     {
-        //
+        $kategoris->update($request->validated());
+
+        return response()->json($kategoris->refresh());
     }
 
     /**
@@ -61,6 +65,8 @@ class KategorisController extends Controller
      */
     public function destroy(kategoris $kategoris)
     {
-        //
+        $kategoris->delete();
+
+        return response()->noContent();
     }
 }

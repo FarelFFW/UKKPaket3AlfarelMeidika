@@ -12,7 +12,7 @@ class Storeinput_aspirasisRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,10 @@ class Storeinput_aspirasisRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'siswa_id' => ['required', 'integer', 'exists:siswas,nis'],
+            'kategori_id' => ['required', 'integer', 'exists:kategoris,id'],
+            'lokasi' => ['required', 'string', 'max:255'],
+            'keterangan' => ['required', 'string'],
         ];
     }
 }

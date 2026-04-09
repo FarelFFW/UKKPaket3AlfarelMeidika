@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\input_aspirasis;
 use App\Http\Requests\Storeinput_aspirasisRequest;
 use App\Http\Requests\Updateinput_aspirasisRequest;
+use App\Models\input_aspirasis;
 
 class InputAspirasisController extends Controller
 {
@@ -13,7 +13,12 @@ class InputAspirasisController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(
+            input_aspirasis::query()
+                ->with(['siswa', 'kategori'])
+                ->latest('id')
+                ->get()
+        );
     }
 
     /**
@@ -21,7 +26,7 @@ class InputAspirasisController extends Controller
      */
     public function create()
     {
-        //
+        abort(404);
     }
 
     /**
@@ -29,7 +34,9 @@ class InputAspirasisController extends Controller
      */
     public function store(Storeinput_aspirasisRequest $request)
     {
-        //
+        $inputAspirasi = input_aspirasis::query()->create($request->validated());
+
+        return response()->json($inputAspirasi->load(['siswa', 'kategori']), 201);
     }
 
     /**
@@ -37,7 +44,7 @@ class InputAspirasisController extends Controller
      */
     public function show(input_aspirasis $input_aspirasis)
     {
-        //
+        return response()->json($input_aspirasis->load(['siswa', 'kategori']));
     }
 
     /**
@@ -45,7 +52,7 @@ class InputAspirasisController extends Controller
      */
     public function edit(input_aspirasis $input_aspirasis)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -53,7 +60,9 @@ class InputAspirasisController extends Controller
      */
     public function update(Updateinput_aspirasisRequest $request, input_aspirasis $input_aspirasis)
     {
-        //
+        $input_aspirasis->update($request->validated());
+
+        return response()->json($input_aspirasis->refresh()->load(['siswa', 'kategori']));
     }
 
     /**
@@ -61,6 +70,8 @@ class InputAspirasisController extends Controller
      */
     public function destroy(input_aspirasis $input_aspirasis)
     {
-        //
+        $input_aspirasis->delete();
+
+        return response()->noContent();
     }
 }

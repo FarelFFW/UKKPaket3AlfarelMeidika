@@ -12,7 +12,7 @@ class UpdateaspirasisRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,10 @@ class UpdateaspirasisRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'status' => ['required', 'in:menunggu,proses,selesai'],
+            'input_aspirasi_id' => ['required', 'integer', 'exists:input_aspirases,id'],
+            'lokasi' => ['required', 'string', 'max:255'],
+            'feedback' => ['required', 'string', 'max:255'],
         ];
     }
 }

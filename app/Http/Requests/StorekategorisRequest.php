@@ -12,7 +12,7 @@ class StorekategorisRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,7 @@ class StorekategorisRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'ket_kategori' => ['required', 'string', 'max:50', 'unique:kategoris,ket_kategori'],
         ];
     }
 }

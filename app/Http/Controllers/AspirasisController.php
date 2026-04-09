@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\aspirasis;
 use App\Http\Requests\StoreaspirasisRequest;
 use App\Http\Requests\UpdateaspirasisRequest;
+use App\Models\aspirasis;
 
 class AspirasisController extends Controller
 {
@@ -13,7 +13,12 @@ class AspirasisController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(
+            aspirasis::query()
+                ->with(['inputAspirasi'])
+                ->latest('id')
+                ->get()
+        );
     }
 
     /**
@@ -21,7 +26,7 @@ class AspirasisController extends Controller
      */
     public function create()
     {
-        //
+        abort(404);
     }
 
     /**
@@ -29,7 +34,15 @@ class AspirasisController extends Controller
      */
     public function store(StoreaspirasisRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        if (! array_key_exists('status', $validated) || $validated['status'] === null) {
+            $validated['status'] = 'menunggu';
+        }
+
+        $aspirasi = aspirasis::query()->create($validated);
+
+        return response()->json($aspirasi->load(['inputAspirasi']), 201);
     }
 
     /**
@@ -37,7 +50,7 @@ class AspirasisController extends Controller
      */
     public function show(aspirasis $aspirasis)
     {
-        //
+        return response()->json($aspirasis->load(['inputAspirasi']));
     }
 
     /**
@@ -45,7 +58,7 @@ class AspirasisController extends Controller
      */
     public function edit(aspirasis $aspirasis)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -53,7 +66,9 @@ class AspirasisController extends Controller
      */
     public function update(UpdateaspirasisRequest $request, aspirasis $aspirasis)
     {
-        //
+        $aspirasis->update($request->validated());
+
+        return response()->json($aspirasis->refresh()->load(['inputAspirasi']));
     }
 
     /**
@@ -61,6 +76,8 @@ class AspirasisController extends Controller
      */
     public function destroy(aspirasis $aspirasis)
     {
-        //
+        $aspirasis->delete();
+
+        return response()->noContent();
     }
 }
