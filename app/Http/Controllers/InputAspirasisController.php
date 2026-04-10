@@ -3,11 +3,58 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Storeinput_aspirasisRequest;
+use App\Http\Requests\SubmitSiswaAspirasiRequest;
 use App\Http\Requests\Updateinput_aspirasisRequest;
+use App\Models\aspirasis;
 use App\Models\input_aspirasis;
+use App\Models\siswas;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 
 class InputAspirasisController extends Controller
 {
+    public function submitFromSiswa(SubmitSiswaAspirasiRequest $request): RedirectResponse
+    {
+        try {
+            $validated = $request->validated();
+
+            $createdInputAspirasi = DB::transaction(function () use ($validated): input_aspirasis {
+                $siswa = siswas::query()->firstOrCreate(
+                    ['nis' => $validated['nis']],
+                    ['kelas' => '-']
+                );
+
+                $inputAspirasi = input_aspirasis::query()->create([
+                    'siswa_id' => $siswa->nis,
+                    'kategori_id' => $validated['kategori_id'],
+                    'lokasi' => $validated['lokasi'],
+                    'keterangan' => $validated['keterangan'],
+                ]);
+
+                aspirasis::query()->create([
+                    'status' => 'menunggu',
+                    'input_aspirasi_id' => $inputAspirasi->id,
+                    'lokasi' => $inputAspirasi->lokasi,
+                    'feedback' => 'Belum ada tanggapan.',
+                ]);
+
+                return $inputAspirasi;
+            });
+
+            return redirect()
+                ->route('siswa.success')
+                ->with('success', 'Aspirasi berhasil dikirim.')
+                ->with('laporan_id', $createdInputAspirasi->id);
+        } catch (\Throwable $throwable) {
+            report($throwable);
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Aspirasi gagal dikirim. Silakan coba lagi.');
+        }
+    }
+
     /**
      * Display a listing of the resource.
      */

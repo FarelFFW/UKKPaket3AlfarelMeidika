@@ -3,11 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreaspirasisRequest;
+use App\Http\Requests\UpdateAdminAspirasiRequest;
 use App\Http\Requests\UpdateaspirasisRequest;
 use App\Models\aspirasis;
+use Illuminate\Http\RedirectResponse;
 
 class AspirasisController extends Controller
 {
+    public function updateFromAdmin(UpdateAdminAspirasiRequest $request, aspirasis $aspirasi): RedirectResponse
+    {
+        $aspirasi->update([
+            'status' => $request->validated('status'),
+            'feedback' => $request->validated('feedback'),
+        ]);
+
+        return redirect()
+            ->route('admin.aspirasi.show.page', ['aspirasi' => $aspirasi->id])
+            ->with('success', 'Feedback aspirasi berhasil diperbarui.');
+    }
+
     /**
      * Display a listing of the resource.
      */

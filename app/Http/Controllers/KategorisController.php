@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorekategorisRequest;
 use App\Http\Requests\UpdatekategorisRequest;
 use App\Models\kategoris;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 
 class KategorisController extends Controller
 {
@@ -27,9 +30,15 @@ class KategorisController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorekategorisRequest $request)
+    public function store(StorekategorisRequest $request): JsonResponse|RedirectResponse
     {
         $kategori = kategoris::query()->create($request->validated());
+
+        if (! $request->expectsJson()) {
+            return redirect()
+                ->route('admin.kategori.index.page')
+                ->with('success', 'Kategori berhasil ditambahkan.');
+        }
 
         return response()->json($kategori, 201);
     }
@@ -53,9 +62,15 @@ class KategorisController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatekategorisRequest $request, kategoris $kategoris)
+    public function update(UpdatekategorisRequest $request, kategoris $kategoris): JsonResponse|RedirectResponse
     {
         $kategoris->update($request->validated());
+
+        if (! $request->expectsJson()) {
+            return redirect()
+                ->route('admin.kategori.index.page')
+                ->with('success', 'Kategori berhasil diperbarui.');
+        }
 
         return response()->json($kategoris->refresh());
     }
@@ -63,9 +78,15 @@ class KategorisController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(kategoris $kategoris)
+    public function destroy(kategoris $kategoris): JsonResponse|RedirectResponse|Response
     {
         $kategoris->delete();
+
+        if (! request()->expectsJson()) {
+            return redirect()
+                ->route('admin.kategori.index.page')
+                ->with('success', 'Kategori berhasil dihapus.');
+        }
 
         return response()->noContent();
     }

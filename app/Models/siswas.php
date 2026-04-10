@@ -11,6 +11,7 @@ class siswas extends Model
     protected $primaryKey = 'nis';
 
     protected $fillable = [
+        'nis',
         'kelas',
     ];
 }

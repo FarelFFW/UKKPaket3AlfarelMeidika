@@ -21,6 +21,12 @@
                     </span>
                     <span class="h-8 w-8 rounded-full bg-slate-100 text-center text-xs leading-8">NOTIF</span>
                     <span class="h-8 w-8 rounded-full bg-slate-100 text-center text-xs leading-8">USER</span>
+                    <form method="POST" action="{{ route('admin.logout') }}">
+                        @csrf
+                        <button type="submit" class="rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100">
+                            Logout
+                        </button>
+                    </form>
                 </div>
             </header>
 

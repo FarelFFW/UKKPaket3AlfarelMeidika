@@ -27,19 +27,19 @@
     <section class="mt-12 rounded-2xl border border-slate-200 bg-white p-8">
         <div class="grid grid-cols-2 gap-6 md:grid-cols-4">
             <div>
-                <p class="text-5xl font-extrabold text-blue-700">120+</p>
+                <p class="text-5xl font-extrabold text-blue-700">{{ $totalSelesai }}</p>
                 <p class="mt-2 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500">Laporan Selesai</p>
             </div>
             <div>
-                <p class="text-5xl font-extrabold text-blue-700">15</p>
+                <p class="text-5xl font-extrabold text-blue-700">{{ $totalProses }}</p>
                 <p class="mt-2 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500">Dalam Proses</p>
             </div>
             <div>
-                <p class="text-5xl font-extrabold text-blue-700">4.8</p>
+                <p class="text-5xl font-extrabold text-blue-700">{{ $completionRate }}%</p>
                 <p class="mt-2 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500">Indeks Kepuasan</p>
             </div>
             <div>
-                <p class="text-5xl font-extrabold text-blue-700">24h</p>
+                <p class="text-5xl font-extrabold text-blue-700">{{ $averageResponseHours !== null ? number_format($averageResponseHours, 1) . 'h' : '-' }}</p>
                 <p class="mt-2 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500">Respon Cepat</p>
             </div>
         </div>

@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AdminLoginRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class AdminAuthController extends Controller
 {
-    public function login(AdminLoginRequest $request): JsonResponse
+    public function login(AdminLoginRequest $request): JsonResponse|RedirectResponse
     {
         if (! Auth::guard('admin')->attempt($request->validated())) {
             throw ValidationException::withMessages([
@@ -19,6 +20,10 @@ class AdminAuthController extends Controller
         }
 
         $request->session()->regenerate();
+
+        if (! $request->expectsJson()) {
+            return redirect()->intended(route('admin.dashboard'));
+        }
 
         return response()->json([
             'admin' => Auth::guard('admin')->user(),
@@ -32,12 +37,16 @@ class AdminAuthController extends Controller
         ]);
     }
 
-    public function logout(Request $request): JsonResponse
+    public function logout(Request $request): JsonResponse|RedirectResponse
     {
         Auth::guard('admin')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        if (! $request->expectsJson()) {
+            return redirect()->route('admin.login.form');
+        }
 
         return response()->json([
             'message' => 'Logout berhasil.',

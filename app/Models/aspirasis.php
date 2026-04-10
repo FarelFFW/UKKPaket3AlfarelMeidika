@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class aspirasis extends Model
 {
-    public $timestamps = false;
-
     protected $fillable = [
         'status',
         'input_aspirasi_id',

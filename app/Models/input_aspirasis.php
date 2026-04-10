@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class input_aspirasis extends Model
 {
-    public $timestamps = false;
-
     protected $fillable = [
         'siswa_id',
         'kategori_id',
