@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+	--page-bg: #f2f4f7;
+	--card-bg: #ffffff;
+	--line: #e5e7eb;
+	--text-main: #111827;
+	--text-muted: #6b7280;
+	--blue: #1d4ed8;
+	--blue-soft: #dbeafe;
+	--green: #10b981;
+	--amber: #f59e0b;
+}
+
+html,
+body {
+	font-family: 'Plus Jakarta Sans', sans-serif;
+	background: radial-gradient(circle at 0% 100%, #dbe4f3 0%, #f3f4f6 30%, #f3f4f6 100%);
+	color: var(--text-main);
+}
+
+.lf-shell {
+	background-color: var(--page-bg);
+}
+
+.lf-card {
+	background-color: var(--card-bg);
+	border: 1px solid var(--line);
+	border-radius: 14px;
+	box-shadow: 0 1px 2px rgb(15 23 42 / 0.03);
+}
+
+.lf-label {
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--text-muted);
+}
+
+.lf-input {
+	width: 100%;
+	border-radius: 10px;
+	border: 1px solid #d1d5db;
+	background-color: #f9fafb;
+	padding: 10px 12px;
+	font-size: 14px;
+}
+
+.lf-input:focus {
+	outline: 2px solid rgb(37 99 235 / 0.25);
+	outline-offset: 1px;
+}
+
+.lf-btn-primary {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 10px;
+	background: linear-gradient(120deg, #2563eb, #1d4ed8);
+	padding: 10px 18px;
+	color: #fff;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.lf-btn-success {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 10px;
+	background: #10b981;
+	padding: 10px 18px;
+	color: #fff;
+	font-size: 14px;
+	font-weight: 600;
+}

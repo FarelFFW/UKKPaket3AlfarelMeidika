@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class admins extends Model
+class admins extends Authenticatable
 {
     public $timestamps = false;
 
